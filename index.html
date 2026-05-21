@@ -1,344 +1,166 @@
 <!doctype html>
-<html lang="pt-BR" class="h-full">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EcoPegada 🌎</title>
-
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
   <style>
     * { font-family: 'Outfit', sans-serif; box-sizing: border-box; }
-
-    html, body {
-      height: 100%;
-      margin: 0;
-      overflow: hidden;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    @keyframes pulse-glow {
-      0%, 100% { box-shadow: 0 0 20px rgba(34,197,94,0.3); }
-      50% { box-shadow: 0 0 40px rgba(34,197,94,0.6); }
-    }
-
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    html, body { width: 100%; height: 100%; margin: 0; }
+    body { overflow: hidden; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes pulse-glow { 0%,100% { box-shadow: 0 0 20px rgba(34,197,94,0.3); } 50% { box-shadow: 0 0 40px rgba(34,197,94,0.6); } }
+    @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .float { animation: float 3s ease-in-out infinite; }
     .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
     .fade-up { animation: fade-up 0.6s ease forwards; }
     .section-hidden { display: none !important; }
-
-    .leaf-bg {
-      background:
-        radial-gradient(ellipse at top right, rgba(34,197,94,0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at bottom left, rgba(59,130,246,0.06) 0%, transparent 50%),
-        #0f1f15;
-    }
-
-    .option-btn {
-      transition: all .2s ease;
-    }
-
-    .option-btn.selected {
-      border-color: #22c55e;
-      background: rgba(34,197,94,0.15);
-      color: white;
-      transform: scale(1.01);
-    }
-
-    .screen {
-      height: 100vh;
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .question-card {
-      max-height: calc(100vh - 190px);
-    }
+    .leaf-bg { background: radial-gradient(ellipse at top right, rgba(34,197,94,0.08) 0%, transparent 50%), radial-gradient(ellipse at bottom left, rgba(59,130,246,0.06) 0%, transparent 50%), #0f1f15; }
+    .screen { height: 100vh; width: 100%; overflow: hidden; }
+    .option-btn { transition: all 0.25s ease; }
+    .option-btn:hover { border-color: rgba(34,197,94,0.7); background: rgba(34,197,94,0.08); }
+    .option-selected { border-color: #22c55e !important; background: rgba(34,197,94,0.18) !important; color: white !important; transform: scale(1.01); }
+    .next-disabled { opacity: 0.45; cursor: not-allowed; }
+    .progress-bar { transition: width 0.4s ease; }
   </style>
-
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            eco: {
-              dark: '#0f1f15',
-              surface: '#1a2e23',
-              accent: '#22c55e',
-              blue: '#3b82f6',
-              light: '#f0fdf4'
-            }
-          }
-        }
-      }
-    }
+    tailwind.config = { theme: { extend: { colors: { eco: { dark: '#0f1f15', surface: '#1a2e23', accent: '#22c55e', blue: '#3b82f6', light: '#f0fdf4' } } } } }
   </script>
 </head>
+<body>
+  <div id="app" class="screen bg-eco-dark text-white leaf-bg">
+    <section id="hero-section" class="screen flex flex-col items-center justify-center px-4 text-center relative overflow-hidden">
+      <div class="absolute top-10 left-10 opacity-20"><svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="38" stroke="#22c55e" stroke-width="1" fill="none" stroke-dasharray="4 4"/></svg></div>
+      <div class="float mb-6"><svg width="120" height="120" viewBox="0 0 120 120" class="drop-shadow-2xl"><defs><linearGradient id="earthGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#3b82f6"/><stop offset="100%" style="stop-color:#22c55e"/></linearGradient></defs><circle cx="60" cy="60" r="55" fill="url(#earthGrad)" opacity="0.9"/><path d="M35 30 C40 25 55 28 50 40 C45 52 60 50 65 45 C70 40 80 50 75 60 C70 70 55 75 45 70 C35 65 25 55 30 45 C35 35 30 35 35 30Z" fill="rgba(255,255,255,0.2)"/></svg></div>
+      <div class="flex items-center gap-2 bg-eco-surface/80 border border-eco-accent/20 rounded-full px-4 py-1.5 mb-6 fade-up"><span class="w-2 h-2 bg-eco-accent rounded-full"></span><span class="text-xs text-gray-300 tracking-wide uppercase">Agrinho 2026</span></div>
+      <h1 class="text-5xl md:text-7xl font-extrabold mb-4 fade-up bg-gradient-to-r from-eco-accent to-eco-blue bg-clip-text text-transparent">EcoPegada 🌎</h1>
+      <p class="text-lg md:text-xl text-gray-300 max-w-lg mb-10 fade-up">Cada escolha conta. Descubra o impacto das suas ações no planeta e transforme o futuro.</p>
+      <button id="start-btn" onclick="startQuiz()" class="pulse-glow bg-gradient-to-r from-eco-accent to-emerald-400 text-eco-dark font-bold text-lg px-8 py-4 rounded-full hover:scale-105 transition-transform fade-up"><span class="flex items-center gap-2"><i data-lucide="leaf" style="width:20px;height:20px"></i> Calcular Minha Pegada</span></button>
+    </section>
 
-<body class="h-full">
-  <main id="app" class="h-full w-full bg-eco-dark text-white leaf-bg">
-
-    <!-- TELA INICIAL -->
-    <section id="hero-section" class="screen flex flex-col items-center justify-center px-6 relative">
-      <div class="absolute top-10 left-10 opacity-20">
-        <svg width="80" height="80" viewBox="0 0 80 80">
-          <circle cx="40" cy="40" r="38" stroke="#22c55e" stroke-width="1" fill="none" stroke-dasharray="4 4"/>
-        </svg>
-      </div>
-
-      <div class="absolute bottom-16 right-10 opacity-20 float">
-        <svg width="60" height="60" viewBox="0 0 60 60">
-          <path d="M30 5 C45 15 55 30 45 50 C35 60 20 55 15 40 C10 25 15 10 30 5Z" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
-        </svg>
-      </div>
-
-      <div class="float mb-6">
-        <svg width="116" height="116" viewBox="0 0 120 120" class="drop-shadow-2xl">
-          <defs>
-            <linearGradient id="earthGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#3b82f6"/>
-              <stop offset="100%" style="stop-color:#22c55e"/>
-            </linearGradient>
-          </defs>
-          <circle cx="60" cy="60" r="55" fill="url(#earthGrad)" opacity="0.9"/>
-          <path d="M35 30 C40 25 55 28 50 40 C45 52 60 50 65 45 C70 40 80 50 75 60 C70 70 55 75 45 70 C35 65 25 55 30 45 C35 35 30 35 35 30Z" fill="rgba(255,255,255,0.2)"/>
-          <path d="M70 25 C78 30 80 38 75 35 C70 32 65 28 70 25Z" fill="rgba(255,255,255,0.15)"/>
-        </svg>
-      </div>
-
-      <div class="flex items-center gap-2 bg-eco-surface/80 border border-eco-accent/20 rounded-full px-4 py-1.5 mb-5 fade-up">
-        <span class="w-2 h-2 bg-eco-accent rounded-full"></span>
-        <span class="text-xs text-gray-300 tracking-wide uppercase">Agrinho 2026</span>
-      </div>
-
-      <h1 id="main-title" class="text-5xl md:text-7xl font-extrabold text-center mb-4 fade-up bg-gradient-to-r from-eco-accent to-eco-blue bg-clip-text text-transparent">
-        EcoPegada 🌎
-      </h1>
-
-      <p id="subtitle" class="text-lg md:text-xl text-gray-300 text-center max-w-2xl mb-9 fade-up">
-        Cada escolha conta. Descubra o impacto das suas ações no planeta e transforme o futuro.
-      </p>
-
-      <button id="start-btn" onclick="startQuiz()" class="pulse-glow bg-gradient-to-r from-eco-accent to-emerald-400 text-eco-dark font-bold text-lg px-8 py-4 rounded-full hover:scale-105 transition-transform fade-up">
-        <span class="flex items-center gap-2">
-          <i data-lucide="leaf" style="width:20px;height:20px"></i>
-          Calcular Minha Pegada
-        </span>
-      </button>
-
-      <div class="flex gap-6 mt-10 fade-up">
-        <div class="flex flex-col items-center gap-1 text-gray-400"><i data-lucide="droplets" style="width:24px;height:24px;color:#3b82f6"></i><span class="text-[10px]">Água</span></div>
-        <div class="flex flex-col items-center gap-1 text-gray-400"><i data-lucide="zap" style="width:24px;height:24px;color:#eab308"></i><span class="text-[10px]">Energia</span></div>
-        <div class="flex flex-col items-center gap-1 text-gray-400"><i data-lucide="recycle" style="width:24px;height:24px;color:#22c55e"></i><span class="text-[10px]">Reciclagem</span></div>
-        <div class="flex flex-col items-center gap-1 text-gray-400"><i data-lucide="car" style="width:24px;height:24px;color:#f97316"></i><span class="text-[10px]">Transporte</span></div>
-        <div class="flex flex-col items-center gap-1 text-gray-400"><i data-lucide="apple" style="width:24px;height:24px;color:#ef4444"></i><span class="text-[10px]">Alimentação</span></div>
+    <section id="quiz-section" class="section-hidden screen flex flex-col items-center justify-center px-4 py-4">
+      <div class="w-full max-w-xl">
+        <div class="mb-5"><div class="flex justify-between text-sm text-gray-400 mb-2"><span id="progress-label">Pergunta 1 de 10</span><span id="progress-pct">10%</span></div><div class="w-full h-2 bg-eco-surface rounded-full overflow-hidden"><div id="progress-fill" class="h-full bg-gradient-to-r from-eco-accent to-eco-blue rounded-full progress-bar" style="width:10%"></div></div></div>
+        <div class="bg-eco-surface/85 backdrop-blur border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl">
+          <div id="question-icon" class="text-4xl mb-3 text-center"></div>
+          <h2 id="question-text" class="text-xl md:text-2xl font-bold mb-6 text-center"></h2>
+          <div id="options-container" class="grid gap-3"></div>
+          <button id="next-btn" onclick="nextQuestion()" disabled class="next-disabled mt-6 w-full bg-gradient-to-r from-eco-accent to-emerald-400 text-eco-dark font-bold px-6 py-4 rounded-2xl transition">Próximo</button>
+        </div>
       </div>
     </section>
 
-    <!-- TELA DO QUIZ -->
-    <section id="quiz-section" class="section-hidden screen flex flex-col items-center justify-center px-4 py-6">
-
-      <div class="w-full max-w-2xl mb-5">
-        <div class="flex justify-between text-sm text-gray-400 mb-2">
-          <span id="progress-label">Pergunta 1 de 10</span>
-          <span id="progress-pct">10%</span>
-        </div>
-        <div class="w-full h-2 bg-eco-surface rounded-full overflow-hidden">
-          <div id="progress-fill" class="h-full bg-gradient-to-r from-eco-accent to-eco-blue rounded-full" style="width:10%"></div>
-        </div>
-      </div>
-
-      <div class="question-card w-full max-w-2xl bg-eco-surface/90 border border-white/10 rounded-3xl p-6 md:p-8">
-        <div class="flex items-center gap-4 mb-5">
-          <div id="question-icon" class="text-5xl"></div>
-          <h2 id="question-text" class="text-xl md:text-2xl font-bold leading-tight"></h2>
-        </div>
-
-        <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6"></div>
-
-        <button id="next-btn" onclick="nextQuestion()" disabled class="w-full bg-gray-700 text-gray-400 font-bold py-4 rounded-2xl transition cursor-not-allowed">
-          Próximo
-        </button>
-      </div>
-    </section>
-
-    <!-- TELA DO RESULTADO -->
-    <section id="result-section" class="section-hidden screen flex flex-col items-center justify-center px-4 py-6">
-      <div class="w-full max-w-2xl text-center bg-eco-surface/90 border border-white/10 rounded-3xl p-7">
-        <div id="result-emoji" class="text-7xl mb-3"></div>
+    <section id="result-section" class="section-hidden screen flex flex-col items-center justify-center px-4 py-4">
+      <div class="w-full max-w-3xl text-center bg-eco-surface/85 border border-white/10 rounded-3xl p-5 md:p-7 shadow-2xl">
+        <div id="result-emoji" class="text-5xl mb-2"></div>
         <h2 id="result-title" class="text-3xl md:text-4xl font-extrabold mb-2"></h2>
-        <p id="result-desc" class="text-gray-300 mb-6"></p>
-
-        <div class="bg-eco-dark/70 rounded-2xl p-5 mb-6">
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>Baixa</span>
-            <span>Alta</span>
-          </div>
-          <div class="w-full h-4 bg-black/30 rounded-full overflow-hidden">
-            <div id="result-bar" class="h-full rounded-full" style="width:0%"></div>
-          </div>
-          <p id="result-score-text" class="text-sm text-gray-400 mt-2"></p>
-        </div>
-
-        <div id="tips-container" class="text-left grid gap-3 mb-6"></div>
-
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-          <button onclick="resetQuiz()" class="bg-eco-surface border border-eco-accent/30 text-eco-accent font-semibold px-6 py-3 rounded-full hover:bg-eco-accent/10 transition">
-            <span class="flex items-center justify-center gap-2"><i data-lucide="refresh-cw" style="width:16px;height:16px"></i> Recalcular</span>
-          </button>
-
-          <button onclick="backHome()" class="bg-eco-accent text-eco-dark font-bold px-6 py-3 rounded-full hover:scale-105 transition">
-            Voltar ao início
-          </button>
+        <p id="result-desc" class="text-gray-300 mb-4"></p>
+        <div class="bg-eco-dark/60 rounded-2xl p-4 mb-4"><div class="flex justify-between text-sm text-gray-400 mb-2"><span>Baixa</span><span>Alta</span></div><div class="w-full h-4 bg-eco-dark rounded-full overflow-hidden"><div id="result-bar" class="h-full rounded-full progress-bar" style="width:0%"></div></div><p id="result-score-text" class="text-sm text-gray-400 mt-2"></p></div>
+        <div id="equivalence-container" class="grid md:grid-cols-3 gap-3 text-left mb-5"></div>
+        <div class="flex flex-col md:flex-row gap-3 justify-center">
+          <button onclick="showActions()" class="bg-gradient-to-r from-orange-400 to-red-500 text-white font-extrabold px-6 py-3 rounded-full hover:scale-105 transition"><span class="flex items-center justify-center gap-2"><span class="text-2xl">😱</span> O que eu faço agora?</span></button>
+          <button onclick="resetQuiz()" class="bg-eco-dark border border-eco-accent/40 text-eco-accent font-semibold px-6 py-3 rounded-full hover:bg-eco-accent/10 transition"><span class="flex items-center justify-center gap-2"><i data-lucide="refresh-cw" style="width:16px;height:16px"></i> Recalcular</span></button>
         </div>
       </div>
     </section>
-  </main>
+
+    <section id="action-section" class="section-hidden screen flex flex-col items-center justify-center px-4 py-4">
+      <div class="w-full max-w-4xl bg-eco-surface/85 border border-white/10 rounded-3xl p-5 md:p-7 shadow-2xl">
+        <div class="text-center mb-4">
+          <div class="text-5xl mb-2">🛠️🌱</div>
+          <h2 class="text-3xl md:text-4xl font-extrabold">Plano de ação sustentável</h2>
+          <p id="action-subtitle" class="text-gray-300 mt-2"></p>
+        </div>
+        <div id="action-cards" class="grid md:grid-cols-2 gap-3 mb-4"></div>
+        <div class="bg-eco-dark/60 border border-white/10 rounded-2xl p-4 mb-4">
+          <h3 class="text-eco-accent font-bold mb-2">🌳 Compensação estimada</h3>
+          <p id="compensation-text" class="text-gray-300 text-sm leading-relaxed"></p>
+        </div>
+        <div class="flex flex-col md:flex-row gap-3 justify-center">
+          <button onclick="resetQuiz()" class="bg-gradient-to-r from-eco-accent to-emerald-400 text-eco-dark font-bold px-6 py-3 rounded-full hover:scale-105 transition">Refazer o teste</button>
+          <button onclick="backToResult()" class="bg-eco-dark border border-white/10 text-gray-200 font-semibold px-6 py-3 rounded-full hover:bg-white/5 transition">Voltar ao resultado</button>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <script>
     const questions = [
-      { icon: '🚗', text: 'Como você vai para a escola?', options: [
-        { label: 'A pé ou bicicleta', score: 0 },
-        { label: 'Transporte público', score: 1 },
-        { label: 'Carona compartilhada', score: 2 },
-        { label: 'Carro particular', score: 3 }
-      ]},
-      { icon: '✈️', text: 'Com que frequência você viaja de avião?', options: [
-        { label: 'Nunca ou muito raramente', score: 0 },
-        { label: 'Uma vez por ano', score: 1 },
-        { label: '2 a 3 vezes por ano', score: 2 },
-        { label: 'Mais de 4 vezes por ano', score: 3 }
-      ]},
-      { icon: '⚡', text: 'Quanto tempo seus aparelhos ficam ligados por dia?', options: [
-        { label: 'Menos de 2 horas', score: 0 },
-        { label: '2 a 5 horas', score: 1 },
-        { label: '5 a 8 horas', score: 2 },
-        { label: 'Mais de 8 horas', score: 3 }
-      ]},
-      { icon: '💡', text: 'Sua casa usa energia de qual fonte?', options: [
-        { label: 'Energia renovável', score: 0 },
-        { label: 'Rede com energia predominante limpa', score: 1 },
-        { label: 'Rede comum', score: 2 },
-        { label: 'Combustível fóssil', score: 3 }
-      ]},
-      { icon: '🍽️', text: 'Como é sua alimentação?', options: [
-        { label: 'Vegetariana ou vegana', score: 0 },
-        { label: 'Pouca carne', score: 1 },
-        { label: 'Carne moderada', score: 2 },
-        { label: 'Carne todos os dias', score: 3 }
-      ]},
-      { icon: '🥫', text: 'Você consome alimentos processados?', options: [
-        { label: 'Quase sempre frescos e locais', score: 0 },
-        { label: 'Poucos processados', score: 1 },
-        { label: 'Quantidade moderada', score: 2 },
-        { label: 'Grande quantidade', score: 3 }
-      ]},
-      { icon: '♻️', text: 'Você separa o lixo para reciclagem?', options: [
-        { label: 'Sempre separo tudo', score: 0 },
-        { label: 'Na maioria das vezes', score: 1 },
-        { label: 'Raramente', score: 2 },
-        { label: 'Nunca separo', score: 3 }
-      ]},
-      { icon: '🛍️', text: 'Como é seu consumo de roupas e eletrônicos?', options: [
-        { label: 'Compro raramente e reutilizo', score: 0 },
-        { label: 'Compro poucas vezes por ano', score: 1 },
-        { label: 'Compro regularmente', score: 2 },
-        { label: 'Compro muito frequentemente', score: 3 }
-      ]},
-      { icon: '💧', text: 'Qual seu hábito com água?', options: [
-        { label: 'Banhos curtos e torneira fechada', score: 0 },
-        { label: 'Tento economizar água', score: 1 },
-        { label: 'Não presto muita atenção', score: 2 },
-        { label: 'Banhos longos sem preocupação', score: 3 }
-      ]},
-      { icon: '🌱', text: 'Você participa de iniciativas verdes?', options: [
-        { label: 'Tenho horta, compostagem ou planto', score: 0 },
-        { label: 'Participo de ações ambientais', score: 1 },
-        { label: 'Tenho interesse, mas não pratico', score: 2 },
-        { label: 'Nunca pensei nisso', score: 3 }
-      ]}
+      { icon: '🚗', text: 'Como você vai para a escola?', options: [{ label: 'A pé ou bicicleta', score: 0 }, { label: 'Transporte público', score: 1 }, { label: 'Carona compartilhada', score: 2 }, { label: 'Carro particular', score: 3 }] },
+      { icon: '✈️', text: 'Com que frequência você viaja de avião?', options: [{ label: 'Nunca ou muito raramente', score: 0 }, { label: 'Uma vez por ano', score: 1 }, { label: '2 a 3 vezes por ano', score: 2 }, { label: 'Mais de 4 vezes por ano', score: 3 }] },
+      { icon: '⚡', text: 'Quanto tempo seus aparelhos ficam ligados por dia?', options: [{ label: 'Menos de 2 horas', score: 0 }, { label: '2 a 5 horas', score: 1 }, { label: '5 a 8 horas', score: 2 }, { label: 'Mais de 8 horas', score: 3 }] },
+      { icon: '💡', text: 'Sua casa usa energia de qual fonte?', options: [{ label: 'Energia renovável, como solar ou eólica', score: 0 }, { label: 'Rede com energia predominante limpa', score: 1 }, { label: 'Rede comum', score: 2 }, { label: 'Energia de combustível fóssil', score: 3 }] },
+      { icon: '🍽️', text: 'Como é sua alimentação?', options: [{ label: 'Vegetariana ou vegana', score: 0 }, { label: 'Pouca carne, 1 a 2 vezes por semana', score: 1 }, { label: 'Carne moderada, 3 a 5 vezes por semana', score: 2 }, { label: 'Carne todos os dias', score: 3 }] },
+      { icon: '🥫', text: 'Você consome alimentos processados e industrializados?', options: [{ label: 'Prefiro alimentos frescos e locais', score: 0 }, { label: 'Consumo poucos processados', score: 1 }, { label: 'Consumo quantidade moderada', score: 2 }, { label: 'Consumo grande quantidade', score: 3 }] },
+      { icon: '♻️', text: 'Você separa o lixo para reciclagem?', options: [{ label: 'Sempre separo tudo', score: 0 }, { label: 'Na maioria das vezes', score: 1 }, { label: 'Raramente', score: 2 }, { label: 'Nunca separo', score: 3 }] },
+      { icon: '🛍️', text: 'Como é seu consumo de roupas e eletrônicos?', options: [{ label: 'Compro raramente e reutilizo', score: 0 }, { label: 'Compro poucas vezes por ano', score: 1 }, { label: 'Compro regularmente', score: 2 }, { label: 'Compro muito frequentemente', score: 3 }] },
+      { icon: '💧', text: 'Qual seu hábito com água?', options: [{ label: 'Banhos curtos e torneira fechada', score: 0 }, { label: 'Tento economizar água', score: 1 }, { label: 'Não presto muita atenção', score: 2 }, { label: 'Banhos longos, sem preocupação', score: 3 }] },
+      { icon: '🌱', text: 'Você participa de iniciativas verdes?', options: [{ label: 'Tenho horta, compostagem ou planto árvores', score: 0 }, { label: 'Participo de ações ambientais', score: 1 }, { label: 'Tenho interesse, mas ainda não pratico', score: 2 }, { label: 'Nunca pensei nisso', score: 3 }] }
     ];
 
     let currentQ = 0;
     let totalScore = 0;
     let selectedScore = null;
-
-    function showOnly(sectionId) {
-      document.getElementById('hero-section').classList.add('section-hidden');
-      document.getElementById('quiz-section').classList.add('section-hidden');
-      document.getElementById('result-section').classList.add('section-hidden');
-      document.getElementById(sectionId).classList.remove('section-hidden');
-    }
+    let latestResult = null;
 
     function startQuiz() {
       currentQ = 0;
       totalScore = 0;
       selectedScore = null;
-      showOnly('quiz-section');
+      document.getElementById('hero-section').classList.add('section-hidden');
+      document.getElementById('result-section').classList.add('section-hidden');
+      document.getElementById('action-section').classList.add('section-hidden');
+      document.getElementById('quiz-section').classList.remove('section-hidden');
       showQuestion();
     }
 
     function showQuestion() {
       selectedScore = null;
-
       const q = questions[currentQ];
       document.getElementById('question-icon').textContent = q.icon;
       document.getElementById('question-text').textContent = q.text;
-
-      const pct = Math.round(((currentQ + 1) / questions.length) * 100);
-      document.getElementById('progress-label').textContent = `Pergunta ${currentQ + 1} de ${questions.length}`;
+      const currentNumber = currentQ + 1;
+      const pct = Math.round((currentNumber / questions.length) * 100);
+      document.getElementById('progress-label').textContent = `Pergunta ${currentNumber} de ${questions.length}`;
       document.getElementById('progress-pct').textContent = pct + '%';
       document.getElementById('progress-fill').style.width = pct + '%';
-
-      const container = document.getElementById('options-container');
-      container.innerHTML = '';
-
-      q.options.forEach((opt) => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn w-full text-left px-5 py-4 rounded-xl border border-white/10 bg-eco-dark/60 hover:border-eco-accent/50 hover:bg-eco-accent/10 text-gray-200 font-medium';
-        btn.textContent = opt.label;
-        btn.onclick = () => selectOption(btn, opt.score);
-        container.appendChild(btn);
-      });
-
       const nextBtn = document.getElementById('next-btn');
       nextBtn.disabled = true;
-      nextBtn.textContent = currentQ === questions.length - 1 ? 'Ver resultado' : 'Próximo';
-      nextBtn.className = 'w-full bg-gray-700 text-gray-400 font-bold py-4 rounded-2xl transition cursor-not-allowed';
+      nextBtn.classList.add('next-disabled');
+      nextBtn.textContent = currentQ === questions.length - 1 ? 'Ver pontuação' : 'Próximo';
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+      q.options.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'option-btn w-full text-left px-5 py-4 rounded-xl border border-white/10 bg-eco-dark/50 text-gray-200 font-medium';
+        btn.textContent = opt.label;
+        btn.addEventListener('click', function () { selectOption(opt.score, btn); });
+        container.appendChild(btn);
+      });
+      if (window.lucide) lucide.createIcons();
     }
 
-    function selectOption(button, score) {
+    function selectOption(score, clickedButton) {
       selectedScore = score;
-
-      document.querySelectorAll('.option-btn').forEach(btn => {
-        btn.classList.remove('selected');
-      });
-
-      button.classList.add('selected');
-
+      document.querySelectorAll('#options-container button').forEach(button => button.classList.remove('option-selected'));
+      clickedButton.classList.add('option-selected');
       const nextBtn = document.getElementById('next-btn');
       nextBtn.disabled = false;
-      nextBtn.className = 'w-full bg-gradient-to-r from-eco-accent to-emerald-400 text-eco-dark font-bold py-4 rounded-2xl hover:scale-[1.02] transition cursor-pointer';
+      nextBtn.classList.remove('next-disabled');
     }
 
     function nextQuestion() {
-      if (selectedScore === null) return;
-
+      if (selectedScore === null) {
+        alert('Escolha uma alternativa antes de continuar.');
+        return;
+      }
       totalScore += selectedScore;
-      currentQ++;
-
-      if (currentQ < questions.length) {
+      if (currentQ < questions.length - 1) {
+        currentQ++;
         showQuestion();
       } else {
         showResult();
@@ -346,85 +168,112 @@
     }
 
     function showResult() {
-      showOnly('result-section');
-
+      document.getElementById('quiz-section').classList.add('section-hidden');
+      document.getElementById('action-section').classList.add('section-hidden');
+      document.getElementById('result-section').classList.remove('section-hidden');
       const maxScore = questions.length * 3;
       const pct = Math.round((totalScore / maxScore) * 100);
+      const estimatedCO2 = Number((2 + (pct / 100) * 14).toFixed(1));
+      const trees = Math.ceil(estimatedCO2 * 50); // estimativa didática: cerca de 50 mudas por tonelada/ano
+      const credits = Math.ceil(estimatedCO2); // 1 crédito de carbono costuma representar 1 tCO₂e
 
-      let emoji, title, desc, color, tips;
-
+      let emoji, title, desc, color, equivalences, actions;
       if (pct <= 33) {
         emoji = '🌿';
         title = 'Pegada Baixa';
-        desc = 'Parabéns! Seus hábitos mostram bastante cuidado com o planeta.';
+        desc = 'Você já tem hábitos sustentáveis. Não é fada da floresta, mas está quase lá.';
         color = 'bg-gradient-to-r from-green-400 to-emerald-500';
-        tips = [
-          'Continue economizando água e energia.',
-          'Compartilhe suas boas práticas com a turma.',
-          'Ajude a escola a pensar em ações sustentáveis.'
+        equivalences = [
+          ['🚲 Transporte', 'Seu impacto é parecido com escolher bicicleta, caminhada ou carona consciente na maior parte da rotina.'],
+          ['🗑️ Lixo', 'É como produzir pouco lixo e ainda separar boa parte para reciclagem. Nada de virar fábrica de embalagem.'],
+          ['📱 Energia', 'Equivale a usar eletrônicos com mais controle, sem deixar tudo ligado como se a tomada fosse infinita.']
         ];
+        actions = ['Continue separando recicláveis e ensine alguém da turma.', 'Mantenha banhos curtos e carregadores fora da tomada.', 'Participe de uma ação verde na escola: horta, coleta seletiva ou plantio.'];
       } else if (pct <= 66) {
         emoji = '🌎';
         title = 'Pegada Média';
-        desc = 'Você está no caminho, mas ainda pode reduzir bastante seu impacto.';
+        desc = 'Você está no meio do caminho. Dá para melhorar sem virar eremita da sustentabilidade.';
         color = 'bg-gradient-to-r from-blue-400 to-cyan-500';
-        tips = [
-          'Tente usar menos carro durante a semana.',
-          'Reduza desperdício de água, energia e alimentos.',
-          'Separe o lixo reciclável sempre que possível.'
+        equivalences = [
+          ['🚗 Transporte', 'É como usar carro algumas vezes na semana, mesmo em trajetos que poderiam virar caminhada, bike ou carona.'],
+          ['🛍️ Consumo', 'Parece aquele carrinho de compras adolescente: roupa nova, lanche embalado e eletrônico carregando todo dia.'],
+          ['🗑️ Lixo', 'É como produzir sacolas de lixo com embalagens que poderiam ser reduzidas, reutilizadas ou recicladas.']
         ];
+        actions = ['Escolha 1 dia por semana sem carro: vá a pé, de bike, ônibus ou carona.', 'Faça 2 refeições por semana com menos carne.', 'Antes de comprar roupa ou eletrônico, espere 48 horas e veja se precisa mesmo.'];
       } else {
         emoji = '🔥';
         title = 'Pegada Alta';
-        desc = 'Sua rotina pode gerar grande impacto ambiental, mas pequenas mudanças já ajudam muito.';
+        desc = 'Alerta vermelho! Seu planeta interior pediu um copo d’água e um plano de ação.';
         color = 'bg-gradient-to-r from-orange-400 to-red-500';
-        tips = [
-          'Comece por uma mudança simples: banho mais curto.',
-          'Evite compras por impulso e reutilize materiais.',
-          'Experimente carona, bicicleta ou caminhada quando possível.'
+        equivalences = [
+          ['🗑️ Lixo', 'É como se sua rotina empurrasse um caminhãozinho simbólico de lixo e emissões todos os dias. Socorro, né?'],
+          ['🚗 Transporte', 'Parece aquele modo “carro para tudo”: até para ir ali na esquina comprar um salgado.'],
+          ['⚡ Consumo', 'É como deixar luz, carregador, tela e compras por impulso gritando: “me nota, boleto!”.']
         ];
+        actions = ['Troque carro sozinho por carona, ônibus, bike ou caminhada pelo menos 3 vezes por semana.', 'Reduza carne e ultraprocessados em alguns dias da semana.', 'Faça um desafio de 30 dias sem compra por impulso: só compra se for necessidade real.'];
       }
+
+      latestResult = { pct, estimatedCO2, trees, credits, actions, title };
 
       document.getElementById('result-emoji').textContent = emoji;
       document.getElementById('result-title').textContent = title;
       document.getElementById('result-desc').textContent = desc;
-      document.getElementById('result-score-text').textContent = `Sua pontuação: ${totalScore}/${maxScore} (${pct}%)`;
+      document.getElementById('result-score-text').textContent = `Sua pontuação: ${totalScore}/${maxScore} (${pct}%) • Estimativa didática: ${estimatedCO2} tCO₂e/ano`;
+      const resultBar = document.getElementById('result-bar');
+      resultBar.className = `h-full rounded-full progress-bar ${color}`;
+      resultBar.style.width = '0%';
+      setTimeout(() => { resultBar.style.width = pct + '%'; }, 100);
 
-      const bar = document.getElementById('result-bar');
-      bar.className = `h-full rounded-full ${color}`;
-      bar.style.width = '0%';
-      setTimeout(() => { bar.style.width = pct + '%'; }, 100);
-
-      const tipsEl = document.getElementById('tips-container');
-      tipsEl.innerHTML = '<h3 class="text-lg font-semibold text-eco-accent">💡 Sugestões para melhorar:</h3>';
-
-      tips.forEach(tip => {
-        tipsEl.innerHTML += `
-          <div class="flex items-start gap-3 bg-eco-dark/60 border border-white/5 rounded-xl px-4 py-3">
-            <span class="text-eco-accent mt-0.5">✓</span>
-            <span class="text-gray-300 text-sm">${tip}</span>
-          </div>
-        `;
+      const equivalenceContainer = document.getElementById('equivalence-container');
+      equivalenceContainer.innerHTML = '';
+      equivalences.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'bg-eco-dark/60 border border-white/10 rounded-2xl p-4';
+        card.innerHTML = `<h3 class="font-bold text-eco-accent mb-1">${item[0]}</h3><p class="text-gray-300 text-sm leading-relaxed">${item[1]}</p>`;
+        equivalenceContainer.appendChild(card);
       });
 
       if (window.lucide) lucide.createIcons();
     }
 
+    function showActions() {
+      if (!latestResult) return;
+      document.getElementById('result-section').classList.add('section-hidden');
+      document.getElementById('quiz-section').classList.add('section-hidden');
+      document.getElementById('action-section').classList.remove('section-hidden');
+
+      document.getElementById('action-subtitle').textContent = `Para o resultado ${latestResult.title}, comece com pequenas mudanças que cabem na rotina de estudante.`;
+      const actionCards = document.getElementById('action-cards');
+      actionCards.innerHTML = '';
+      const cards = [
+        ['🚶 Transporte inteligente', latestResult.actions[0]],
+        ['🍽️ Alimentação consciente', latestResult.actions[1]],
+        ['🛍️ Consumo sem impulso', latestResult.actions[2]],
+        ['♻️ Missão escola', 'Crie uma ação com a turma: coleta seletiva, ecoponto, campanha de garrafas, horta ou plantio de mudas.']
+      ];
+      cards.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'bg-eco-dark/60 border border-white/10 rounded-2xl p-4';
+        card.innerHTML = `<h3 class="font-bold text-eco-accent mb-1">${item[0]}</h3><p class="text-gray-300 text-sm leading-relaxed">${item[1]}</p>`;
+        actionCards.appendChild(card);
+      });
+
+      document.getElementById('compensation-text').innerHTML = `Se quiser compensar simbolicamente sua emissão estimada de <strong>${latestResult.estimatedCO2} tCO₂e/ano</strong>, uma conta didática seria plantar cerca de <strong>${latestResult.trees} árvores</strong> ao longo do tempo ou buscar aproximadamente <strong>${latestResult.credits} créditos de carbono</strong>. Atenção: isso é uma estimativa para aprendizagem; o ideal é primeiro reduzir hábitos de alto impacto e só depois compensar o que não conseguir reduzir.`;
+    }
+
+    function backToResult() {
+      document.getElementById('action-section').classList.add('section-hidden');
+      document.getElementById('result-section').classList.remove('section-hidden');
+    }
+
     function resetQuiz() {
-      currentQ = 0;
-      totalScore = 0;
-      selectedScore = null;
-      showOnly('quiz-section');
-      showQuestion();
+      document.getElementById('result-section').classList.add('section-hidden');
+      document.getElementById('quiz-section').classList.add('section-hidden');
+      document.getElementById('action-section').classList.add('section-hidden');
+      document.getElementById('hero-section').classList.remove('section-hidden');
     }
 
-    function backHome() {
-      showOnly('hero-section');
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      if (window.lucide) lucide.createIcons();
-    });
+    document.addEventListener('DOMContentLoaded', function () { if (window.lucide) lucide.createIcons(); });
   </script>
 </body>
 </html>
