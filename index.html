@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt-BR" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoPegada 🌎</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Outfit', sans-serif; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    @keyframes pulse-glow { 0%,100%{box-shadow:0 0 20px rgba(34,197,94,0.3)} 50%{box-shadow:0 0 40px rgba(34,197,94,0.6)} }
+    @keyframes spin-slow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    @keyframes fade-up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .float { animation: float 3s ease-in-out infinite; }
+    .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .spin-slow { animation: spin-slow 20s linear infinite; }
+    .fade-up { animation: fade-up 0.6s ease forwards; }
+    .card-hover { transition: all 0.3s cubic-bezier(0.4,0,0.2,1); }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .progress-bar { transition: width 0.5s ease; }
+    .section-hidden { display: none; }
+    .leaf-bg { background: radial-gradient(ellipse at top right, rgba(34,197,94,0.08) 0%, transparent 50%), radial-gradient(ellipse at bottom left, rgba(59,130,246,0.06) 0%, transparent 50%); }
+  </style>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { eco: { dark: '#0f1f15', surface: '#1a2e23', accent: '#22c55e', blue: '#3b82f6', light: '#f0fdf4' } } } } }
+  </script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="h-full w-full overflow-auto bg-eco-dark text-white leaf-bg">
+   <!-- Hero Section -->
+   <section id="hero-section" class="min-h-full flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
+    <!-- Decorative Elements -->
+    <div class="absolute top-10 left-10 opacity-20 spin-slow">
+     <svg width="80" height="80" viewbox="0 0 80 80"><circle cx="40" cy="40" r="38" stroke="#22c55e" stroke-width="1" fill="none" stroke-dasharray="4 4" />
+     </svg>
+    </div>
+    <div class="absolute bottom-20 right-10 opacity-15 float">
+     <svg width="60" height="60" viewbox="0 0 60 60"><path d="M30 5 C45 15 55 30 45 50 C35 60 20 55 15 40 C10 25 15 10 30 5Z" fill="none" stroke="#3b82f6" stroke-width="1.5" />
+     </svg>
+    </div>
+    <div class="absolute top-1/4 right-1/4 w-2 h-2 bg-eco-accent rounded-full opacity-40 float" style="animation-delay:1s"></div>
+    <div class="absolute bottom-1/3 left-1/5 w-3 h-3 bg-eco-blue rounded-full opacity-30 float" style="animation-delay:2s"></div><!-- Earth SVG -->
+    <div class="float mb-8">
+     <svg width="120" height="120" viewbox="0 0 120 120" class="drop-shadow-2xl">
+      <defs>
+       <lineargradient id="earthGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#3b82f6" />
+        <stop offset="100%" style="stop-color:#22c55e" />
+       </lineargradient>
+      </defs> <circle cx="60" cy="60" r="55" fill="url(#earthGrad)" opacity="0.9" /> <path d="M35 30 C40 25 55 28 50 40 C45 52 60 50 65 45 C70 40 80 50 75 60 C70 70 55 75 45 70 C35 65 25 55 30 45 C35 35 30 35 35 30Z" fill="rgba(255,255,255,0.2)" /> <path d="M70 25 C78 30 80 38 75 35 C70 32 65 28 70 25Z" fill="rgba(255,255,255,0.15)" />
+     </svg>
+    </div><!-- Badge -->
+    <div class="flex items-center gap-2 bg-eco-surface/80 backdrop-blur-sm border border-eco-accent/20 rounded-full px-4 py-1.5 mb-6 fade-up">
+     <span class="w-2 h-2 bg-eco-accent rounded-full"></span> <span class="text-xs text-gray-300 tracking-wide uppercase">Agrinho 2026</span>
+    </div><!-- Title -->
+    <h1 id="main-title" class="text-5xl md:text-7xl font-800 text-center mb-4 fade-up bg-gradient-to-r from-eco-accent to-eco-blue bg-clip-text text-transparent" style="animation-delay:0.1s">EcoPegada 🌎</h1>
+    <p id="subtitle" class="text-lg md:text-xl text-gray-300 text-center max-w-lg mb-10 fade-up" style="animation-delay:0.2s">Cada escolha conta. Descubra o impacto das suas ações no planeta e transforme o futuro.</p><!-- CTA Button --> <button id="start-btn" onclick="startQuiz()" class="pulse-glow bg-gradient-to-r from-eco-accent to-emerald-400 text-eco-dark font-bold text-lg px-8 py-4 rounded-full hover:scale-105 transition-transform fade-up" style="animation-delay:0.3s"> <span class="flex items-center gap-2"><i data-lucide="leaf" style="width:20px;height:20px"></i> <span id="btn-text">Calcular Minha Pegada</span></span> </button> <!-- Icon Row -->
+    <div class="flex gap-6 mt-12 fade-up" style="animation-delay:0.4s">
+     <div class="flex flex-col items-center gap-1 text-gray-400"><i data-lucide="droplets" style="width:24px;height:24px;color:#3b82f6"></i><span class="text-[10px]">Água</span>
+     </div>
+     <div class="flex flex-col items-center gap-1 text-gray-400"><i data-lucide="zap" style="width:24px;height:24px;color:#eab308"></i><span class="text-[10px]">Energia</span>
+     </div>
+     <div class="flex flex-col items-center gap-1 text-gray-400"><i data-lucide="recycle" style="width:24px;height:24px;color:#22c55e"></i><span class="text-[10px]">Reciclagem</span>
+     </div>
+     <div class="flex flex-col items-center gap-1 text-gray-400"><i data-lucide="car" style="width:24px;height:24px;color:#f97316"></i><span class="text-[10px]">Transporte</span>
+     </div>
+     <div class="flex flex-col items-center gap-1 text-gray-400"><i data-lucide="apple" style="width:24px;height:24px;color:#ef4444"></i><span class="text-[10px]">Alimentação</span>
+     </div>
+    </div>
+   </section><!-- Quiz Section -->
+   <section id="quiz-section" class="section-hidden min-h-full flex flex-col items-center px-4 py-8">
+    <!-- Progress -->
+    <div class="w-full max-w-lg mb-8">
+     <div class="flex justify-between text-sm text-gray-400 mb-2">
+      <span id="progress-label">Pergunta 1 de 5</span> <span id="progress-pct">0%</span>
+     </div>
+     <div class="w-full h-2 bg-eco-surface rounded-full overflow-hidden">
+      <div id="progress-fill" class="h-full bg-gradient-to-r from-eco-accent to-eco-blue rounded-full progress-bar" style="width:0%"></div>
+     </div>
+    </div><!-- Question Card -->
+    <div id="question-card" class="w-full max-w-lg bg-eco-surface/80 backdrop-blur border border-white/5 rounded-3xl p-8 card-hover">
+     <div id="question-icon" class="text-4xl mb-4"></div>
+     <h2 id="question-text" class="text-xl font-semibold mb-6"></h2>
+     <div id="options-container" class="flex flex-col gap-3"></div>
+    </div>
+   </section><!-- Result Section -->
+   <section id="result-section" class="section-hidden min-h-full flex flex-col items-center justify-center px-4 py-12">
+    <div class="w-full max-w-lg text-center">
+     <div id="result-emoji" class="text-7xl mb-4"></div>
+     <h2 id="result-title" class="text-3xl font-bold mb-2"></h2>
+     <p id="result-desc" class="text-gray-300 mb-8"></p><!-- Score Visual -->
+     <div class="bg-eco-surface/80 backdrop-blur border border-white/5 rounded-2xl p-6 mb-8">
+      <div class="flex justify-between text-sm text-gray-400 mb-2"><span>Baixa</span><span>Alta</span>
+      </div>
+      <div class="w-full h-4 bg-eco-dark rounded-full overflow-hidden">
+       <div id="result-bar" class="h-full rounded-full progress-bar" style="width:0%"></div>
+      </div>
+      <p id="result-score-text" class="text-sm text-gray-400 mt-2"></p>
+     </div><!-- Tips -->
+     <div id="tips-container" class="text-left space-y-3 mb-8"></div><button onclick="resetQuiz()" class="bg-eco-surface border border-eco-accent/30 text-eco-accent font-semibold px-6 py-3 rounded-full hover:bg-eco-accent/10 transition"> <span class="flex items-center gap-2"><i data-lucide="refresh-cw" style="width:16px;height:16px"></i> Recalcular</span> </button>
+    </div>
+   </section>
+  </div>
+  <script>
+const questions = [
+  { icon: '🚗', text: 'Como você vai para a escola?', options: [
+    { label: 'A pé ou bicicleta', score: 0 },
+    { label: 'Transporte público', score: 1 },
+    { label: 'Carona compartilhada', score: 2 },
+    { label: 'Carro particular', score: 3 }
+  ]},
+  { icon: '✈️', text: 'Com que frequência você viaja de avião?', options: [
+    { label: 'Nunca ou muito raramente', score: 0 },
+    { label: 'Uma vez por ano', score: 1 },
+    { label: '2 a 3 vezes por ano', score: 2 },
+    { label: 'Mais de 4 vezes por ano', score: 3 }
+  ]},
+  { icon: '⚡', text: 'Quanto tempo seus aparelhos ficam ligados por dia?', options: [
+    { label: 'Menos de 2 horas', score: 0 },
+    { label: '2 a 5 horas', score: 1 },
+    { label: '5 a 8 horas', score: 2 },
+    { label: 'Mais de 8 horas', score: 3 }
+  ]},
+  { icon: '💡', text: 'Sua casa usa energia de qual fonte?', options: [
+    { label: 'Energia renovável (solar, eólica)', score: 0 },
+    { label: 'Rede com energia predominante limpa', score: 1 },
+    { label: 'Rede comum (misturada)', score: 2 },
+    { label: 'Energia a carvão/combustível fóssil', score: 3 }
+  ]},
+  { icon: '🍽️', text: 'Como é sua alimentação?', options: [
+    { label: 'Vegetariana/vegana', score: 0 },
+    { label: 'Pouca carne (1-2x por semana)', score: 1 },
+    { label: 'Carne moderada (3-5x por semana)', score: 2 },
+    { label: 'Carne todos os dias', score: 3 }
+  ]},
+  { icon: '🥫', text: 'Você consome alimentos processados e industrializados?', options: [
+    { label: 'Alimentos frescos e locais', score: 0 },
+    { label: 'Poucos processados', score: 1 },
+    { label: 'Quantidade moderada', score: 2 },
+    { label: 'Grande quantidade', score: 3 }
+  ]},
+  { icon: '♻️', text: 'Você separa o lixo para reciclagem?', options: [
+    { label: 'Sempre separo tudo', score: 0 },
+    { label: 'Na maioria das vezes', score: 1 },
+    { label: 'Raramente', score: 2 },
+    { label: 'Nunca separo', score: 3 }
+  ]},
+  { icon: '🛍️', text: 'Qual é seu consumo de roupas e eletrônicos?', options: [
+    { label: 'Compro raramente e reutilizo', score: 0 },
+    { label: 'Compro poucas peças por ano', score: 1 },
+    { label: 'Compro regularmente', score: 2 },
+    { label: 'Compro muito frequentemente (moda rápida)', score: 3 }
+  ]},
+  { icon: '💧', text: 'Qual seu hábito com água?', options: [
+    { label: 'Banhos curtos, torneira fechada', score: 0 },
+    { label: 'Tento economizar água', score: 1 },
+    { label: 'Não presto muita atenção', score: 2 },
+    { label: 'Banhos longos, sem preocupação', score: 3 }
+  ]},
+  { icon: '🌱', text: 'Você planta árvores ou tem iniciativas verdes?', options: [
+    { label: 'Sim, tenho horta/compostagem/plantio', score: 0 },
+    { label: 'Participo de ações ambientais', score: 1 },
+    { label: 'Tenho interesse mas não pratico', score: 2 },
+    { label: 'Nunca pensei nisso', score: 3 }
+  ]}
+];
+
+let currentQ = 0, totalScore = 0;
+
+function startQuiz() {
+  document.getElementById('hero-section').classList.add('section-hidden');
+  document.getElementById('quiz-section').classList.remove('section-hidden');
+  currentQ = 0; totalScore = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = questions[currentQ];
+  document.getElementById('question-icon').textContent = q.icon;
+  document.getElementById('question-text').textContent = q.text;
+  const pct = Math.round((currentQ / questions.length) * 100);
+  document.getElementById('progress-label').textContent = `Pergunta ${currentQ+1} de ${questions.length}`;
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'w-full text-left px-5 py-4 rounded-xl border border-white/10 bg-eco-dark/50 hover:border-eco-accent/50 hover:bg-eco-accent/5 transition text-gray-200 font-medium';
+    btn.textContent = opt.label;
+    btn.onclick = () => selectOption(opt.score);
+    container.appendChild(btn);
+  });
+}
+
+function selectOption(score) {
+  totalScore += score;
+  currentQ++;
+  if (currentQ < questions.length) { showQuestion(); }
+  else { showResult(); }
+}
+
+function showResult() {
+  document.getElementById('quiz-section').classList.add('section-hidden');
+  document.getElementById('result-section').classList.remove('section-hidden');
+
+  const maxScore = questions.length * 3;
+  const pct = Math.round((totalScore / maxScore) * 100);
+  let emoji, title, desc, color, tips, details;
+
+  if (pct <= 33) {
+    emoji = '🌿'; 
+    title = 'Pegada Baixa'; 
+    desc = 'Parabéns! Você tem hábitos sustentáveis incríveis!';
+    color = 'bg-gradient-to-r from-green-400 to-emerald-500';
+    details = '💚 PEGADA BAIXA: 2-4 toneladas CO₂/ano\n\n📊 O que significa?\nVocê emite cerca de 2-4 toneladas de CO₂ por ano. Isso é 70-80% menor que a média brasileira!\n\n🚴 Seus hábitos:\n✓ Usa bicicleta, a pé ou transporte público\n✓ Pouca ou nenhuma viagem de avião\n✓ Alimentação com pouca carne\n✓ Eletrônicos desligados quando não usa\n✓ Recicla e economiza água\n\n🌱 Conversão em exemplos:\n• 1 dia de carro por semana = 0,3 ton CO₂/ano (precisa de 3 árvores)\n• Nível seu: Equivale a apenas 30 minutos de carro por semana\n• Você precisaria de apenas 20-40 árvores plantadas para compensar totalmente!\n\n💡 Você é 2x mais sustentável que a média!';
+    tips = ['Mantenha seus hábitos - você é um exemplo!', 'Ajude amigos a reduzir suas pegadas.', 'Desafie sua escola a adotar práticas sustentáveis.'];
+  } else if (pct <= 66) {
+    emoji = '🌎'; 
+    title = 'Pegada Média'; 
+    desc = 'Você está na média, mas pode fazer a diferença!';
+    color = 'bg-gradient-to-r from-blue-400 to-cyan-500';
+    details = '🌍 PEGADA MÉDIA: 8-12 toneladas CO₂/ano\n\n📊 O que significa?\nVocê emite cerca de 8-12 toneladas de CO₂ por ano. Isso é a média brasileira típica.\n\n⚠️ Seus principais impactos:\n• Carro 3-4 horas por semana = ~4 ton CO₂/ano\n• 1-2 voos por ano = ~2 ton CO₂/ano\n• Carne 3-5x por semana = ~1,5 ton CO₂/ano\n• Eletrônicos ligados muito tempo = ~1 ton CO₂/ano\n• Pouca reciclagem = +0,5 ton CO₂/ano\n\n🌱 Conversão em exemplos:\n• Usar metrô 1 dia/semana ao invés de carro = reduz 2 ton/ano!\n• Reduzir carne para 2x/semana = economiza 1 ton/ano\n• Desligar aparelhos = economiza 0,5 ton/ano\n\n🎯 Meta realista: Reduza para 6 ton/ano (basta fazer 3 dessas mudanças!)\nPrecisaria de 80-120 árvores para compensar sua emissão atual.';
+    tips = ['Deixe o carro em casa 1 dia por semana.', 'Experimente um dia sem carne (segunda sem carne!).', 'Desligue WiFi, TV e carregadores à noite.'];
+  } else {
+    emoji = '🔥'; 
+    title = 'Pegada Alta'; 
+    desc = 'Sua pegada é alta. Pequenas mudanças fazem grande diferença!';
+    color = 'bg-gradient-to-r from-orange-400 to-red-500';
+    details = '🔥 PEGADA ALTA: 15+ toneladas CO₂/ano\n\n📊 O que significa?\nVocê emite mais de 15 toneladas de CO₂ por ano. Isso é 50% acima da média brasileira!\n\n❌ Seus principais impactos:\n• Carro 8+ horas por semana = ~7-8 ton CO₂/ano (maior culpado!)\n• 3+ voos por ano = ~4 ton CO₂/ano\n• Carne todos os dias = ~2 ton CO₂/ano\n• Eletrônicos sempre ligados = ~1,5 ton CO₂/ano\n• Sem reciclagem = +1 ton CO₂/ano\n\n🌱 Conversão em exemplos:\n• Carona compartilhada 3x/semana = reduz 4 ton/ano (GIGANTE!)\n• Trocar carne por frango/vegetais = economiza 1 ton/ano\n• Reduzir voos para 1x/ano = economiza 2 ton/ano\n• Usar transporte público = economiza 3 ton/ano\n\n🚨 Você precisaria plantar 150-200 árvores por ano para compensar!\n\n💪 Boas notícias: Reduzindo carro + voos você chega a 8 ton/ano em 6 meses!';
+    tips = ['Carona com amigos: reduz 4 ton CO₂/ano!', 'Menos voos aéreos: 1 voo = 1 tonelada CO₂', 'Sexta-feira vegetariana: salva 200kg CO₂/ano.'];
+  }
+
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-desc').textContent = desc;
+  document.getElementById('result-bar').className = `h-full rounded-full progress-bar ${color}`;
+  setTimeout(() => { document.getElementById('result-bar').style.width = pct + '%'; }, 100);
+  document.getElementById('result-score-text').textContent = `Sua pontuação: ${totalScore}/${maxScore} (${pct}%)`;
+
+  const tipsEl = document.getElementById('tips-container');
+  tipsEl.innerHTML = '<h3 class="text-lg font-semibold text-eco-accent mb-4">📊 Análise da sua pegada:</h3>';
+  details.split('\n').forEach(line => {
+    if (line.trim()) {
+      tipsEl.innerHTML += `<p class="text-gray-300 text-sm leading-relaxed">${line}</p>`;
+    }
+  });
+  tipsEl.innerHTML += '<h3 class="text-lg font-semibold text-eco-accent mt-6 mb-4">💡 Dicas para você:</h3>';
+  tips.forEach(t => {
+    tipsEl.innerHTML += `<div class="flex items-start gap-3 bg-eco-surface/60 border border-white/5 rounded-xl px-4 py-3"><span class="text-eco-accent mt-0.5">✓</span><span class="text-gray-300 text-sm">${t}</span></div>`;
+  });
+  lucide.createIcons();
+}
+
+function resetQuiz() {
+  document.getElementById('result-section').classList.add('section-hidden');
+  document.getElementById('hero-section').classList.remove('section-hidden');
+}
+
+// Element SDK
+const defaultConfig = {
+  main_title: 'EcoPegada 🌎',
+  subtitle: 'Cada escolha conta. Descubra o impacto das suas ações no planeta e transforme o futuro.',
+  button_text: 'Calcular Minha Pegada',
+  background_color: '#0f1f15',
+  surface_color: '#1a2e23',
+  text_color: '#d1d5db',
+  primary_color: '#22c55e',
+  secondary_color: '#3b82f6',
+  font_family: 'Outfit',
+  font_size: 16
+};
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = { ...defaultConfig, ...config };
+    document.getElementById('main-title').textContent = c.main_title;
+    document.getElementById('subtitle').textContent = c.subtitle;
+    document.getElementById('btn-text').textContent = c.button_text;
+    document.getElementById('app').style.backgroundColor = c.background_color;
+    document.getElementById('app').style.fontFamily = `${c.font_family}, Outfit, sans-serif`;
+    document.getElementById('app').style.fontSize = c.font_size + 'px';
+    document.getElementById('main-title').style.fontSize = (c.font_size * 3.5) + 'px';
+    document.getElementById('subtitle').style.fontSize = (c.font_size * 1.2) + 'px';
+  },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+      { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['main_title', config.main_title || defaultConfig.main_title],
+    ['subtitle', config.subtitle || defaultConfig.subtitle],
+    ['button_text', config.button_text || defaultConfig.button_text]
+  ])
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9fded4d57091c20f',t:'MTc3OTE0ODkzMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
